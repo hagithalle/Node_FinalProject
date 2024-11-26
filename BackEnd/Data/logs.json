@@ -1,0 +1,28 @@
+{
+  "actions": [
+    {
+      "id": 3,
+      "maxActions": 300,
+      "date": "2024-11-09",
+      "actionsAllowed": 178
+    },
+    {
+      "id": 3,
+      "maxActions": 300,
+      "date": "2024-11-09",
+      "actionsAllowed": 177
+    },
+    {
+      "id": 3,
+      "maxActions": 300,
+      "date": "2024-11-09",
+      "actionsAllowed": 176
+    },
+    {
+      "id": 3,
+      "maxActions": 300,
+      "date": "2024-11-09",
+      "actionsAllowed": 175
+    }
+  ]
+}
