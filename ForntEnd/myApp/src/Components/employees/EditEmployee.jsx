@@ -15,9 +15,9 @@ export default function EditEmployee() {
 
     const { departmentData } = useSelector(state => state.department);
     const { employeeData, isError, isSuccess, message } = useSelector(state => state.employees);
-    const { shifts } = useSelector(state => state.shifts);
+    const { shiftsData: shifts } = useSelector(state => state.shifts);
     const [selectedEmployee, setSelectedEmployee] = useState(false);
-    
+
     const [editEmployee, setEditEmployee] = useState({
         id: "",
         firstName: "",
@@ -28,11 +28,14 @@ export default function EditEmployee() {
     });
 
     useEffect(() => {
+        dispatch(getAllShifts());
+    }, [dispatch]);
+
+    useEffect(() => {
         if (location.state) {
             setSelectedEmployee(true);
             const { _id, firstName, lastName, startWork, departmentId, shifts } = location.state;
-            setEditEmployee({ id: _id, firstName: firstName || "", lastName: lastName || "", startWork: startWork || 0, departmentId: departmentId || "", shifts: shifts || [] });
-            dispatch(getAllShifts());
+            setEditEmployee({ id: _id, firstName, lastName, startWork, departmentId, shifts });
         }
     }, [dispatch, location.state]);
 
@@ -62,10 +65,13 @@ export default function EditEmployee() {
     };
 
     const handleRegisterShift = (shiftId) => {
-        setEditEmployee(prev => ({
-            ...prev,
-            shifts: [...prev.shifts, shifts.find(shift => shift._id === shiftId)]
-        }));
+        const newShift = shifts?.find(shift => shift._id === shiftId);
+        if (newShift) {
+            setEditEmployee(prev => ({
+                ...prev,
+                shifts: [...prev.shifts, newShift._id]  // Add the new shift to the array
+            }));
+        }
     };
 
     const handleSelectEmployee = (employee) => {
@@ -76,7 +82,28 @@ export default function EditEmployee() {
         { label: 'Date', key: 'date' },
         { label: 'Starting Hour', key: 'startingHour' },
         { label: 'Ending Hour', key: 'endingHour' },
-      ];
+    ];
+
+    const formatDate = (date) => {
+        const dateObj = new Date(date);  // Convert the date to a Date object
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }).format(dateObj);
+    };
+
+    const getShiftsData = (empShifts) => {
+        // Map the shift IDs to their corresponding shift data
+        return empShifts?.map(shiftId => {
+            const shift = shifts?.find(s => s._id === shiftId);
+            return shift ? { 
+                date: formatDate(shift.date),
+                startingHour: shift.startingHour,
+                endingHour: shift.endingHour 
+            } : null;
+        }).filter(shift => shift !== null);
+    };
 
     return (
         <Grid container spacing={2} justifyContent="center">
@@ -114,7 +141,7 @@ export default function EditEmployee() {
                                         id="firstName"
                                         label="First Name"
                                         name="firstName"
-                                        value={editEmployee.firstName || ""} // Fallback to empty string
+                                        value={editEmployee.firstName || ""}
                                         onChange={handleChange}
                                         autoFocus
                                     />
@@ -126,7 +153,7 @@ export default function EditEmployee() {
                                         id="lastName"
                                         label="Last Name"
                                         name="lastName"
-                                        value={editEmployee.lastName || ""} // Fallback to empty string
+                                        value={editEmployee.lastName || ""}
                                         onChange={handleChange}
                                     />
                                     <InputLabel id="department-label">Department</InputLabel>
@@ -135,7 +162,7 @@ export default function EditEmployee() {
                                         id="department"
                                         name="departmentId"
                                         fullWidth
-                                        value={editEmployee.departmentId || ""} // Fallback to empty string
+                                        value={editEmployee.departmentId || ""}
                                         onChange={handleChange}
                                         sx={{ mb: 2 }}
                                     >
@@ -152,7 +179,7 @@ export default function EditEmployee() {
                                         label="Start Year"
                                         name="startWork"
                                         type="number"
-                                        value={editEmployee.startWork || 0} // Fallback to 0
+                                        value={editEmployee.startWork || 0}
                                         onChange={handleChange}
                                     />
                                     <InputLabel sx={{ mt: 2 }}>Shifts:</InputLabel>
@@ -161,14 +188,17 @@ export default function EditEmployee() {
                                         fullWidth
                                         onChange={(e) => handleRegisterShift(e.target.value)}
                                         sx={{ mt: 2 }}
-                                        value="" // Set default empty value to avoid undefined
+                                        value=""
                                     >
                                         {shifts?.map(shift => (
-                                            <MenuItem key={shift._id} value={shift._id}>{shift.date}</MenuItem>
+                                            <MenuItem key={shift._id} value={shift._id}>{formatDate(shift.date)}</MenuItem>
                                         ))}
                                     </Select>
-                                    <TableComp columns={columns} rows={editEmployee.shifts} 
-                                    sx={{marginTop:"50px"}}/>
+                                    <TableComp 
+                                        columns={columns} 
+                                        rows={getShiftsData(editEmployee.shifts)} 
+                                        sx={{ marginTop: "50px" }} 
+                                    />
                                     <Box mt={2}>
                                         <Button
                                             type="submit"
