@@ -93,7 +93,6 @@ export const departmentSlice = createSlice({
         builder
             .addCase(getAllDepartment.pending, (state) => { state.isLoading = true; })
             .addCase(getAllDepartment.fulfilled, (state, action) => {
-                console.log("getAllDepartment action.payload: ", action.payload)
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.message = action.payload.message;

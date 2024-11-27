@@ -26,6 +26,17 @@ const login = async (user) => {
         throw error.response ? error.response.data : error;
     }
 };
+const getUser = async(email,token)=>{
+    console.log("XX")
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+
+    console.log("Service get user get data:", API_URL, token)
+
+    const {data :response}  = await axios.get(API_URL+email, config)
+    console.log("get user rsponse:" ,response)
+
+    return response
+}
 
 
 const logOut = ()=>{
@@ -34,6 +45,6 @@ const logOut = ()=>{
     window.location.reload()
 }
 
-const authService = {login, logOut}
+const authService = {login,getUser, logOut}
 
 export default authService

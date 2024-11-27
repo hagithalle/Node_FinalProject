@@ -5,6 +5,10 @@ const getAllUsers = () => {
   return userRepo.getAllUsers();
 };
 
+const getUserByEmail=(email)=>{
+  return userRepo.getUserByEmail(email)
+}
+
 const checkUserLogin = async (email, userName) => {
   const user = await userRepo.getUserByEmail(email);
 
@@ -91,4 +95,5 @@ module.exports = {
   checkUserLogin,
   initData,
   scheduleUpdateUserAction,
+  getUserByEmail
 };

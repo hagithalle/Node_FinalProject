@@ -2,95 +2,51 @@ import { useState, useEffect } from "react";
 import { Box, Typography, CssBaseline } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../dl/slices/authSlice";
 
 export default function UserDashboard() {
-  const [user, setUser] = useState(null);  // Initialize as null to signify no user data at first
-  const [isLoading, setIsLoading] = useState(true);  // Add a loading state
+  const { user, isLoading, isError } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  // Fetch the current user from session storage
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
-    if (currentUser) {
-      setUser(currentUser);
+    
+    if (currentUser && !user) {  
+      dispatch(getUser(currentUser.email)); 
     }
-    setIsLoading(false);  // Set loading to false once user is fetched
-  }, []);  // Empty dependency array to run once on mount
+  }, [dispatch, user]);  
 
-  // Show error toast if there's an issue loading user data
-  useEffect(() => {
-    if (user && user.actionsAllowed === 0) {
-     // toast.error("Action allowed today is 0; user cannot perform any more actions.");
-    }
-  }, [user]);
-
-  // Loading state or error handling while user data is being fetched
   if (isLoading) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '90vh',
-          textAlign: 'center',
-        }}
-      >
-        <CssBaseline />
-        <Typography variant="h3" component="div" sx={{ textAlign: "center" }}>
-          Loading...
-        </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Typography variant="h4">Loading...</Typography>
       </Box>
     );
   }
 
-  // Display when user is not allowed to perform any action
-  if (user && user.actionsAllowed === 0) {
+  if (isError) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '90vh',
-          textAlign: 'center',
-        }}
-      >
-        <CssBaseline />
-        <Typography variant="h3" component="div" sx={{ textAlign: "center" }}>
-          {user.fullName || 'Loading...'}
-        </Typography>
-        <Typography variant="h5" component="div" sx={{ textAlign: "center" }}>
-          You are not allowed to do any actions today.
-        </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Typography variant="h4" color="error">Error loading user data.</Typography>
       </Box>
     );
   }
 
-  // Display user details when data is available
-  if (user) {
+  if (!user) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '90vh',
-          textAlign: 'center',
-        }}
-      >
-        <CssBaseline />
-        <Typography variant="h3" component="div" sx={{ textAlign: "center" }}>
-          {user.fullName || 'Loading...'}
-        </Typography>
-        <Typography variant="h5" component="div" sx={{ textAlign: "center" }}>
-          {`You have ${user.actionsAllowed} out of ${user.numOfActions} actions left for today`}
-        </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Typography variant="h4">No user data found. Please log in.</Typography>
       </Box>
     );
   }
 
-  return null;  // Return null if no user is found or user data is still unavailable
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
+      <Typography variant="h3">{user.fullName}</Typography>
+      <Typography variant="h5">
+        You have {user.actionsAllowed} out of {user.numOfActions} actions left for today.
+      </Typography>
+    </Box>
+  );
 }

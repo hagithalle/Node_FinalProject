@@ -7,7 +7,12 @@ const router = express.Router()
 
 router.get("/", protect, actionsMiddleware, async(req,res)=>{
     const getAllUsers = await userService.getAllUsers()
-    return res.status(200).json({message: "Users  retrieved successfully", data: getAllUsers})
+    return res.status(200).json({message: "Users retrieved successfully", data: getAllUsers})
+})
+
+router.get("/:email", protect, actionsMiddleware, async(req,res)=>{
+    const user = await userService.getUserByEmail(req.params.email)
+    return res.status(200).json({message: "User retrieved successfully", data: user})
 })
 
 router.get("/init", async(req,res)=>{

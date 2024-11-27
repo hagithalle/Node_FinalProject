@@ -1,76 +1,102 @@
 {
   "actions": [
     {
-      "id": 3,
+      "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 0
+      "actionsAllowed": 202
+    }
+  ]
+}
+
+      "id": 2,
+      "maxActions": 300,
+      "date": "2024-11-27",
+      "actionsAllowed": 217
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 299
+      "actionsAllowed": 216
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 298
+      "actionsAllowed": 215
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 297
+      "actionsAllowed": 214
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 296
+      "actionsAllowed": 213
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 295
+      "actionsAllowed": 212
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 294
+      "actionsAllowed": 211
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 293
+      "actionsAllowed": 210
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 292
+      "actionsAllowed": 208
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 291
+      "actionsAllowed": 207
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 290
+      "actionsAllowed": 206
     },
     {
       "id": 2,
       "maxActions": 300,
       "date": "2024-11-27",
-      "actionsAllowed": 289
+      "actionsAllowed": 205
+    },
+    {
+      "id": 2,
+      "maxActions": 300,
+      "date": "2024-11-27",
+      "actionsAllowed": 204
+    },
+    {
+      "id": 2,
+      "maxActions": 300,
+      "date": "2024-11-27",
+      "actionsAllowed": 203
+    },
+    {
+      "id": 2,
+      "maxActions": 300,
+      "date": "2024-11-27",
+      "actionsAllowed": 202
     }
   ]
 }
